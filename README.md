@@ -161,12 +161,12 @@ The CLI is intentionally small and only exposes the simplest built-in execution 
 
 2. **Run a single built-in experiment**
    ```bash
-   pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode sequential
+   pydart run --workers 2 --ratio 1:1 --tasks 10 --baseline-mode sequential
    ```
 
 3. **Run multiple built-in experiments**
    ```bash
-   pydart sweep --workers 2 --tasks 8 --baseline-mode sequential
+   pydart sweep --workers 2 --tasks 10 --baseline-mode sequential
    ```
 
 ### Ratio
