@@ -17,6 +17,14 @@ The codebase is structured so that simple experiments can be run from the CLI, w
 
 At present, the most stable and recommended baseline mode for testing is **sequential**. An **async** baseline path is also supported for stronger fully parallel comparison, but it may place more stress on the host system at higher workloads.
 
+## What PyDart Helps You Explore
+
+PyDart is designed to help users explore concurrent multi-model execution on their own system in a simple way. It can be used to study how task composition, batch size, and workload mix affect runtime behavior, and how PyDart can intelligently partition and schedule tasks using custom metrics.
+
+At the moment, custom metrics are not directly exposed through the minimal CLI workflow. To explore or extend that part of the framework, refer to `metrics.py`.
+
+See [Installation](#installation) to set up the environment, or jump to [CLI](#cli) and [Python for Custom Workflows](#python-for-custom-workflows) to start running experiments.
+
 ## Repository Structure
 
 ```text
