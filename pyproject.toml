@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=58", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydart"
+version = "0.1.0"
+description = "PyDart profiling, partitioning, and scheduling framework for multi-model inference experiments"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+  { name = "Parth Shinde" }
+]
+dependencies = [
+  "numpy>=1.24,<2",
+  "pandas>=2.2,<2.3",
+  "networkx>=2.8,<3",
+  "matplotlib>=3.8,<3.9",
+  "viztracer>=1.0,<1.1",
+  "fvcore>=0.1.5.post20221221,<0.2",
+  "PyYAML>=6.0,<7",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+  "jupyter>=1,<2",
+  "ipykernel>=6,<7",
+  "black>=24,<26",
+]
+
+[project.scripts]
+pydart = "pydart.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

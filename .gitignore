@@ -1,0 +1,27 @@
+# outputs
+outputs/*
+!outputs/.gitkeep
+
+# custom outputs
+outputs_custom/*
+!outputs_custom/.gitkeep
+
+#config
+configs/*
+
+# logs
+logs/*
+!logs/.gitkeep
+
+# trace html files
+runtime_results.csv
+trace.log
+*_trace.html
+result_*.html
+trace*.html
+
+# builds
+*.egg-info/
+build/
+dist/
+__pycache__/
