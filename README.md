@@ -39,6 +39,7 @@ PyDart_temp/
 ├── README.md
 ├── pyproject.toml
 └── System_Diagram.png
+```
 
 ### Quick Repo Guide
 
@@ -49,7 +50,7 @@ PyDart_temp/
 -  `outputs_custom/` stores outputs from custom Python-based runs
 -  `outputs_custom/`sweep or run_multiple_experiments style outputs, including traces, plots, summaries, and related experiment artifacts
 
-This structure is intended to make the repo easy to navigate: core code in `src/pydart/`, runnable examples in `examples/`, interactive exploration in `notebooks/`, and generated results in outputs.
+This structure is intended to make the repo easy to navigate: core code in `src/pydart/`, runnable examples in `examples/`, interactive exploration in `notebooks/`, and generated results in `outputs/`.
 
 ## Execution Model
 
