@@ -120,6 +120,8 @@ In this mode:
 > - It is strongly recommended to use a virtual environment before installing PyDart.
 > - PyTorch should be installed **separately first**, using the correct build for your platform (CPU or CUDA), before installing or running PyDart.
 > - For PyTorch installation instructions, use the official guide: https://pytorch.org/get-started/locally/
+> - PyDart generally gives the best and most representative results on CPU+GPU systems, since the framework is intended to study shared-resource execution across heterogeneous compute.
+
 
 ### Setup
 
