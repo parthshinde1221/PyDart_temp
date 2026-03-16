@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import networkx as nx
+import os
 import torch
 import torch.fx as fx
 import torch.nn as nn
@@ -432,7 +433,7 @@ class Evaluator:
 
     def run_baseline_execution(self, mode: str = "sequential"):
         if mode == "sequential":
-            return self.run_naive_execution()
+            return self.run_baseline_execution(mode="sequential")
         if mode == "async":
             return self.run_async_naive_execution()
         raise ValueError(f"Unknown baseline mode: {mode}")
@@ -494,8 +495,14 @@ class Evaluator:
             exec_time = t1 - t0
             completion_time = time.perf_counter() - start
             return task.task_id, exec_time, completion_time, out.cpu()
+        
+        
+        task_count = len(self.taskset.tasks)
+        cpu_count = os.cpu_count() or 1
+        max_workers = max(1, min(task_count, cpu_count - 1 if cpu_count > 1 else 1))
+        print(f"No of Workers launching are: {max_workers}")
 
-        with ThreadPoolExecutor(max_workers=len(self.taskset.tasks)) as executor:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = [executor.submit(execute_task, task) for task in self.taskset.tasks]
 
             for future in as_completed(futures):

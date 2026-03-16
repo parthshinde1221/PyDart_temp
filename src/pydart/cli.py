@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import gc
+
 import torch
+
 from pydart.experiment import run_experiment, run_multiple_experiments
 
 
@@ -24,21 +26,24 @@ def parse_ratio(text: str) -> tuple[int, int]:
 
     return heavy_i, light_i
 
+
 def cmd_run(args: argparse.Namespace) -> None:
     ratio = parse_ratio(args.ratio)
 
     print(
         f"Running single built-in PyDart experiment "
-        f"(workers={args.workers}, ratio={ratio}, tasks={args.tasks})."
+        f"(workers={args.workers}, ratio={ratio}, tasks={args.tasks}, "
+        f"baseline_mode={args.baseline_mode})."
     )
 
-    eval = run_experiment(
+    evaluator = run_experiment(
         k=args.workers,
         heavy_light_ratio=ratio,
         num_tasks=args.tasks,
+        mode=args.baseline_mode,
     )
 
-    del eval
+    del evaluator
 
     gc.collect()
     if torch.cuda.is_available():
@@ -50,13 +55,16 @@ def cmd_run(args: argparse.Namespace) -> None:
 def cmd_sweep(args: argparse.Namespace) -> None:
     print(
         f"Running built-in PyDart experiment sweep "
-        f"(workers={args.workers}, tasks={args.tasks})."
+        f"(workers={args.workers}, tasks={args.tasks}, "
+        f"baseline_mode={args.baseline_mode})."
     )
 
     run_multiple_experiments(
         k=args.workers,
         num_tasks=args.tasks,
+        mode=args.baseline_mode,
     )
+
 
 def build_parser() -> argparse.ArgumentParser:
     print("Welcome to PyDart CLI.")
@@ -71,7 +79,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--workers",
         type=int,
         default=2,
-        help="Number of workers to use , recommended number of cpu cores. Default: 2",
+        help="Number of workers to use. Recommended: number of CPU cores. Default: 2",
     )
     run_parser.add_argument(
         "--ratio",
@@ -85,6 +93,13 @@ def build_parser() -> argparse.ArgumentParser:
         default=10,
         help="Total number of tasks. Default: 10",
     )
+    run_parser.add_argument(
+        "--baseline-mode",
+        type=str,
+        choices=["sequential", "async"],
+        default="sequential",
+        help="Baseline execution mode. Choices: sequential or async. Default: sequential",
+    )
     run_parser.set_defaults(func=cmd_run)
 
     sweep_parser = subparsers.add_parser(
@@ -95,13 +110,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--workers",
         type=int,
         default=2,
-        help="Number of workers to use , recommended number of cpu cores. Default: 2 ",
+        help="Number of workers to use. Recommended: number of CPU cores. Default: 2",
     )
     sweep_parser.add_argument(
         "--tasks",
         type=int,
         default=10,
         help="Total number of tasks per experiment. Default: 10",
+    )
+    sweep_parser.add_argument(
+        "--baseline-mode",
+        type=str,
+        choices=["sequential", "async"],
+        default="sequential",
+        help="Baseline execution mode. Choices: sequential or async. Default: sequential",
     )
     sweep_parser.set_defaults(func=cmd_sweep)
 
@@ -113,7 +135,6 @@ def main() -> None:
     args = parser.parse_args()
 
     if not hasattr(args, "func"):
-        
         parser.print_help()
         return
 

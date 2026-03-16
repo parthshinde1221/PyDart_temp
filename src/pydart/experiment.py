@@ -63,6 +63,7 @@ def run_experiment(
     k: int,
     heavy_light_ratio: Tuple[int, int],
     num_tasks: int = 10,
+    mode: str = "sequential"
 ) -> Evaluator:
     set_seed(42)
 
@@ -126,7 +127,7 @@ def run_experiment(
         output_file=f"{OUTPUTS_DIR_RUN}/result_naive_{heavy_light_ratio}_list_scheduling.html"
     )
     tracer_naive.start()
-    evaluator.run_naive_execution()
+    evaluator.run_baseline_execution(mode=mode)
     tracer_naive.stop()
     tracer_naive.save()
 
@@ -155,7 +156,7 @@ def run_experiment(
     return evaluator
 
 
-def run_multiple_experiments(k: int, num_tasks: int = 15) -> None:
+def run_multiple_experiments(k: int, num_tasks: int = 15, mode: str = "sequential") -> None:
     ratios = [round(i / 10, 1) for i in range(1, 10)]
     speedups = []
     parallel_throughputs = []
@@ -192,6 +193,7 @@ def run_multiple_experiments(k: int, num_tasks: int = 15) -> None:
             k=k,
             heavy_light_ratio=(heavy_count, light_count),
             num_tasks=num_tasks,
+            mode = mode
         )
 
         sp = evaluator.speedup_makespan

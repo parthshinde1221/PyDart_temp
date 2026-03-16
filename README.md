@@ -1,92 +1,142 @@
 # PyDart
 
-PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution and scheduling across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart’s scheduled parallel execution, while keeping the workflow minimal and understandable.
+PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution and scheduling across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart's scheduled parallel execution, while keeping the workflow minimal and understandable.
 
-> **Note:** This repo is made for the demo and is mainly experimental.
+> **Note:** This repository is currently intended as a demo / experimental research framework.
 
 ## Current Scope
 
 PyDart currently supports:
 
-- built-in model-registry-based experiments
-- manual Python workflows for custom models and custom task construction
-- sequential baseline execution through `run_naive_execution()`
-- scheduled parallel execution through the PyDart task execution pipeline
+- Built-in model-registry-based experiments
+- Manual Python workflows for custom models and custom task construction
+- Baseline execution through `run_baseline_execution(mode=...)`
+- Scheduled parallel execution through the PyDart task execution pipeline
 
-The codebase is structured so that simple experiments can be run from the CLI, while advanced or custom experiments are better handled through Python scripts or notebooks.
+The codebase is structured so that simple experiments can be run from the CLI, while more advanced or custom experiments are better handled through Python scripts or notebooks.
+
+At present, the most stable and recommended baseline mode for testing is **sequential**. An **async** baseline path is also supported for stronger fully parallel comparison, but it may place more stress on the host system at higher workloads.
+
+## Repository Structure
+
+```text
+PyDart_temp/
+├── configs/         # Experiment configuration files
+├── examples/        # Example Python scripts
+├── notebooks/       # Notebook demos and experiments
+├── outputs/         # Main output folder
+├── src/pydart/      # Core PyDart package
+├── README.md
+├── pyproject.toml
+└── System_Diagram.png
+```
+
+### Quick Repo Guide
+
+- `src/pydart/` contains the main framework code
+- `examples/` is the best place to look for custom Python usage
+- `notebooks/` is useful for demo-style exploration and experimentation
+- `outputs/` is the primary location for generated artifacts such as traces, logs, profiling CSVs, and experiment results
+
+This structure is intended to make the repo easy to navigate: core code in `src/pydart/`, runnable examples in `examples/`, interactive exploration in `notebooks/`, and generated results in `outputs/`.
 
 ## Execution Model
 
-At the moment, PyDart compares two primary execution paths:
+At the moment, PyDart compares a baseline execution path against PyDart's scheduled parallel execution.
 
-### 1. Sequential baseline
-This is the current `run_naive_execution()` path in `Evaluator`.
+### 1. Baseline Execution
+
+This is handled through `run_baseline_execution(mode=...)` in `Evaluator`.
+
+#### Sequential baseline
+
+This is the current primary and most stable baseline mode.
 
 In this mode:
 
-- tasks are executed one by one
-- each task is run in a simple sequential loop
-- execution time, completion time, outputs, and makespan are recorded
-- this acts as the current baseline for comparison
+- Tasks are executed one by one
+- Each task is run in a simple sequential loop
+- Execution time, completion time, outputs, and makespan are recorded
+- This acts as the default baseline for comparison
 
-### 2. PyDart scheduled parallel execution
+#### Async baseline
+
+An async baseline is also supported.
+
+The intended purpose of this mode is to represent a more aggressive host-side parallel launch strategy, where tasks are submitted asynchronously as a baseline against PyDart's structured scheduling.
+
+In practice:
+
+- It can provide an extra comparison point than sequential execution
+- It may stress the system more heavily than sequential mode, especially at higher workloads
+- It is best used when the machine has enough available CPU / GPU resources and comparable workloads
+- Sequential mode remains the safest and most recommended option for routine testing
+
+### 2. PyDart Scheduled Parallel Execution
+
 This is the current `run_parallel_execution()` path in `Evaluator`.
 
 In this mode:
 
-- tasks are assigned through the PyDart execution framework
-- the `Taskset` executes all tasks across workers/nodes
-- outputs, per-task execution times, completion times, and makespan are collected
-- this is the main framework-driven execution path
-
-## Planned Baseline Extension
-
-A fully async parallel baseline is also planned.
-
-The async baseline code path has already been explored and will be integrated into the baseline execution flow. This will provide an additional comparison point beyond the current sequential baseline.
-
-The intended purpose of that async baseline is to represent a completely parallel host-side launch strategy, where all tasks are submitted asynchronously as a baseline against PyDart’s structured scheduling.
-
-For now:
-
-- `run_naive_execution()` should be treated as the **sequential baseline**
-- the async baseline is acknowledged as part of the roadmap and ongoing implementation work
+- Tasks are assigned through the PyDart execution framework
+- The `Taskset` executes tasks across workers / nodes
+- Outputs, per-task execution times, completion times, and makespan are collected
+- This is the main framework-driven execution path
 
 ## System Diagram
+
 ![PyDart System Diagram](System_Diagram.png)
-> **Note:**  Older Diagram need to be updated.
+
+> **Note:** The current diagram is older and will be updated.
 
 ## Installation
 
 ### Requirements
+
 - Python 3.9+
-- pip
-- PyTorch installed for your platform/device
+- `pip`
+- A supported PyTorch installation for your platform and device
 
 > **Important**
-> - A virtual environment is strongly recommended before installing PyDart.
-> - PyTorch should be installed first, using the correct build for your system (CPU or CUDA, CUDA is best (CPU+GPU) recommeneded systems), before installing or running PyDart.
+> - It is strongly recommended to use a virtual environment before installing PyDart.
+> - PyTorch should be installed **separately first**, using the correct build for your platform (CPU or CUDA), before installing or running PyDart.
+> - For PyTorch installation instructions, use the official guide: https://pytorch.org/get-started/locally/
 
-### Setup and Installation
+### Setup
 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/parthshinde1221/PyDart_temp.git
-   cd PyDart_temp_main
+   cd PyDart_temp
+   ```
 
-2. **Clone the repository**
+2. **Create and activate a virtual environment**
+
+   Using `venv`:
    ```bash
-   create your virtual env using venv or uv python module and activate it
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
 
-3. **Clone the repository**
+   On Windows:
+   ```bash
+   .venv\Scripts\activate
+   ```
+
+3. **Install PyTorch first**
+
+   Follow the official instructions for your platform:
+   https://pytorch.org/get-started/locally/
+
+4. **Install PyDart**
    ```bash
    pip install .
+   ```
 
-
-3. **Verify the Installation**
+5. **Verify the installation**
    ```bash
-   pydart
    pydart --help
+   ```
 
 ## CLI
 
@@ -97,38 +147,98 @@ The CLI is intentionally small and only exposes the simplest built-in execution 
 ### Commands
 
 1. **Show CLI help**
-    ```bash
-    pydart
-    pydart --help
-
-2. **Run single built-in experiment**
    ```bash
-    pydart run --workers 2 --ratio 1:1 --tasks 8
+   pydart --help
+   ```
+
+2. **Run a single built-in experiment**
+   ```bash
+   pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode sequential
+   ```
 
 3. **Run multiple built-in experiments**
    ```bash
-   pydart sweep --workers 2 --tasks 8
+   pydart sweep --workers 2 --tasks 8 --baseline-mode sequential
+   ```
 
+### Baseline Mode
 
-## Python for custom workflows
+PyDart supports configurable baseline execution through the CLI using `--baseline-mode`.
 
+Expected baseline modes include:
+
+- `sequential` — recommended default for testing; simpler, safer, and more stable for most systems
+- `async` — also supported and useful for stronger fully parallel comparison, but it may stress the host system more at higher workloads
+
+#### Recommendation
+
+- Use `sequential` for routine testing and the most stable baseline comparison
+- Use `async` when you want a more aggressive parallel baseline and your system has enough available resources
+
+Examples:
+
+```bash
+pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode sequential
+```
+
+```bash
+pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode async
+```
+
+## Python for Custom Workflows
 
 Use Python scripts or notebooks when you want to:
 
-a. define custom nn.Modules
-b. define custom ModelSpecs
-c. create custom dataloaders
-d. control tracing manually
-e. build tasks explicitly
-f. profile tasks manually
-g. experiment with evaluator logic directly
+- Define custom `nn.Module` models
+- Define custom `ModelSpec` objects
+- Create custom dataloaders
+- Control tracing manually
+- Build tasks explicitly
+- Profile tasks manually
+- Experiment with evaluator logic directly
 
 This separation keeps the CLI minimal while still letting PyDart act like a flexible library.
 
-### Running a Custom Python File
+### Running Custom Python Files
 
-For custom experiments , run a python file directly:
-python examples/custom_file_name.py
+For custom experiments, run one of the provided example files directly:
 
-Output folder relvance is its used outputs for all the single or multiple experiments run and clears everytime you run the experiment
----
+```bash
+python examples/custom_model_run_sequential.py
+python examples/custom_model_run_async.py
+```
+
+You can also add your own custom run file under `examples/` and execute it in the same way:
+
+```bash
+python examples/<custom_run_file>.py
+```
+
+Refer to `examples/custom_model_run_sequential.py` and `examples/custom_model_run_async.py` for example custom workflows.
+
+
+## Outputs
+
+PyDart organizes generated artifacts by workflow type.
+
+- `outputs_built_in_run/` is used for CLI-based single built-in runs
+- `outputs_custom/` is used for custom Python-based runs
+- `outputs/` is used for sweep or `run_multiple_experiments` style runs, including artifacts such as traces, plots, summaries, and related experiment outputs
+
+Depending on the workflow, generated artifacts may include:
+
+- traces
+- logs
+- profiling CSVs
+- plots
+- experiment results
+
+This structure helps separate built-in, custom, and multi-experiment outputs more clearly.
+
+## Notes
+
+- The repository is currently demo-oriented and experimental.
+- The CLI is intentionally minimal.
+- `sequential` is the recommended baseline mode for most users and for routine testing.
+- `async` is also supported and can provide a stronger comparison point, but it may stress the system more at higher workloads.
+- For custom models and more advanced workflows, prefer Python scripts or notebooks.
