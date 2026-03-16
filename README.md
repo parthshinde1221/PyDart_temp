@@ -80,7 +80,7 @@ In practice:
 - It is best used when the machine has enough available CPU / GPU resources and comparable workloads
 - Sequential mode remains the safest and most recommended option for routine testing
 
-### 2. PyDart Scheduled Parallel Execution
+### 2. PyDart Partitioned & Scheduled Parallel Execution
 
 This is the current `run_parallel_execution()` path in `Evaluator`.
 
