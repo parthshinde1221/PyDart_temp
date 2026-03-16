@@ -51,7 +51,7 @@ For now:
 - the async baseline is acknowledged as part of the roadmap and ongoing implementation work
 
 ## System Diagram
-![PyDart System Diagram](System Diagram.png)
+![PyDart System Diagram](System_Diagram.png)
 
 ## Installation
 
