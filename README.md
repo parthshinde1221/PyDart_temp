@@ -169,6 +169,17 @@ The CLI is intentionally small and only exposes the simplest built-in execution 
    pydart sweep --workers 2 --tasks 8 --baseline-mode sequential
    ```
 
+### Ratio
+
+`--ratio` defines the heavy-to-light task mix for built-in experiments and is written in `H:L` form.
+
+Examples:
+- `1:1` = equal heavy and light tasks
+- `2:1` = more heavy tasks
+- `1:2` = more light tasks
+
+This is useful for exploring how workload composition affects execution and scheduling.
+
 ### Baseline Mode
 
 PyDart supports configurable baseline execution through the CLI using `--baseline-mode`.
