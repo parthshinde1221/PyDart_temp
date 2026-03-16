@@ -29,24 +29,27 @@ See [Installation](#installation) to set up the environment, or jump to [CLI](#c
 
 ```text
 PyDart_temp/
-├── configs/         # Experiment configuration files
-├── examples/        # Example Python scripts
-├── notebooks/       # Notebook demos and experiments
-├── outputs/         # Main output folder
-├── src/pydart/      # Core PyDart package
+├── configs/              # Experiment configuration files
+├── examples/             # Example Python scripts
+├── notebooks/            # Notebook demos and experiments
+├── outputs/              # Multi-experiment / sweep outputs
+├── outputs_built_in_run/ # CLI-based single built-in run outputs
+├── outputs_custom/       # Custom Python run outputs
+├── src/pydart/           # Core PyDart package
 ├── README.md
 ├── pyproject.toml
 └── System_Diagram.png
-```
 
 ### Quick Repo Guide
 
-- `src/pydart/` contains the main framework code
-- `examples/` is the best place to look for custom Python usage
-- `notebooks/` is useful for demo-style exploration and experimentation
-- `outputs/` is the primary location for generated artifacts such as traces, logs, profiling CSVs, and experiment results
+-  `src/pydart/` contains the main framework code
+-  `examples/` is the best place to look for custom Python usage
+-  `notebooks/` is useful for demo-style exploration and experimentation
+-  `outputs_built_in_run/` stores CLI-based single built-in run artifacts
+-  `outputs_custom/` stores outputs from custom Python-based runs
+-  `outputs_custom/`sweep or run_multiple_experiments style outputs, including traces, plots, summaries, and related experiment artifacts
 
-This structure is intended to make the repo easy to navigate: core code in `src/pydart/`, runnable examples in `examples/`, interactive exploration in `notebooks/`, and generated results in `outputs/`.
+This structure is intended to make the repo easy to navigate: core code in `src/pydart/`, runnable examples in `examples/`, interactive exploration in `notebooks/`, and generated results in outputs.
 
 ## Execution Model
 
