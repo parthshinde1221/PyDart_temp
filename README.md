@@ -1,6 +1,6 @@
 # PyDart
 
-PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution and scheduling across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart's scheduled parallel execution, while keeping the workflow minimal and understandable.
+PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution and scheduling across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart's scheduled parallel execution, while keeping the workflow easy to follow.
 
 > **Note:** This repository is currently intended as a demo / experimental research framework.
 
@@ -13,13 +13,20 @@ PyDart currently supports:
 - Baseline execution through `run_baseline_execution(mode=...)`
 - Scheduled parallel execution through the PyDart task execution pipeline
 
-The codebase is structured so that simple experiments can be run from the CLI, while more advanced or custom experiments are better handled through Python scripts or notebooks.
+You can use the CLI for simple built-in experiments, while more flexible or advanced workflows are better handled through Python scripts or notebooks.
 
 At present, the most stable and recommended baseline mode for testing is **sequential**. An **async** baseline path is also supported for stronger fully parallel comparison, but it may place more stress on the host system at higher workloads.
 
 ## What PyDart Helps You Explore
 
-PyDart is designed to help users explore concurrent multi-model execution on their own system in a simple way. It can be used to study how task composition, batch size, and workload mix affect runtime behavior, and how PyDart can intelligently partition and schedule tasks using custom metrics.
+PyDart is mainly built to help you explore how running multiple DNN inference tasks together behaves on your own system in a simple way.
+
+With it, you can study things like:
+
+- **Task mix:** how different mixes of inference tasks behave when run together
+- **Batch size:** how the number of tasks in a batch affects performance
+- **Baseline comparison:** how concurrent execution compares with a simple baseline
+- **Scheduling behavior:** how PyDart can split and schedule tasks using custom metrics
 
 At the moment, custom metrics are not directly exposed through the minimal CLI workflow. To explore or extend that part of the framework, refer to `metrics.py`.
 
