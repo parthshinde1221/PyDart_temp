@@ -1,6 +1,6 @@
 # PyDart
 
-PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution and scheduling across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart's scheduled parallel execution, while keeping the workflow easy to follow.
+PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart’s pipeline-parallel partitioning and scheduling approach towards excuetion, while keeping the workflow easy to follow.
 
 > **Note:** This repository is currently intended as a demo / experimental research framework.
 
