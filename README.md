@@ -54,6 +54,7 @@ For now:
 
 ## System Diagram
 ![PyDart System Diagram](System_Diagram.png)
+> **Note:**  Older Diagram need to be updated.
 
 ## Installation
 
@@ -71,7 +72,7 @@ For now:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/parthshinde1221/PyDart_temp.git
-   cd PyDart_temp
+   cd PyDart_temp_main
 
 2. **Clone the repository**
    ```bash
@@ -79,7 +80,7 @@ For now:
 
 3. **Clone the repository**
    ```bash
-   pip install -e .
+   pip install .
 
 
 3. **Verify the Installation**

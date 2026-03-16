@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import time
 from pathlib import Path
+import shutil
 
 import torch
 import torch.nn as nn
@@ -21,11 +22,18 @@ from pydart import (
 )
 from pydart.utils import set_seed
 
+from pydart.paths import CUSTOM_OUTPUTS_DIR
 
-REPO_ROOT = Path.cwd().parents[0]
-OUTPUTS_DIR = REPO_ROOT / "outputs_custom"
-OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+CUSTOM_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+if CUSTOM_OUTPUTS_DIR.exists():
+    shutil.rmtree(CUSTOM_OUTPUTS_DIR)
+    print("Old Outputs deleted")
 
+CUSTOM_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+
+print("------CUSTOM OUTPUT DIR------")
+print(CUSTOM_OUTPUTS_DIR)
+print("------CUSTOM OUTPUT DIR------")
 
 class CustomMLP(nn.Module):
     def __init__(
@@ -164,8 +172,8 @@ def main() -> None:
     taskset = Taskset(tasks, nodes)
     evaluator = Evaluator(taskset, profiler)
 
-    naive_trace = OUTPUTS_DIR / "custom_mix_naive_trace.html"
-    parallel_trace = OUTPUTS_DIR / "custom_mix_parallel_trace.html"
+    naive_trace = CUSTOM_OUTPUTS_DIR / "custom_mix_naive_trace.html"
+    parallel_trace = CUSTOM_OUTPUTS_DIR / "custom_mix_parallel_trace.html"
 
     tracer_naive = VizTracer(output_file=str(naive_trace))
     tracer_naive.start()
@@ -184,7 +192,7 @@ def main() -> None:
 
     print(f"Naive trace saved to: {naive_trace}")
     print(f"Parallel trace saved to: {parallel_trace}")
-    print(f"All custom outputs stored in: {OUTPUTS_DIR.resolve()}")
+    print(f"All custom outputs stored in: {CUSTOM_OUTPUTS_DIR.resolve()}")
 
     for node in nodes:
         node.stop()

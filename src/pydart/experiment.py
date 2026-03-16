@@ -20,7 +20,7 @@ from .node import Node
 from .profiler import Profiler
 from .task import Evaluator, Task, Taskset
 from .utils import set_seed
-
+from .paths import OUTPUTS_DIR,OUTPUTS_DIR_RUN
 warnings.filterwarnings("ignore")
 
 HEAVY_EXPERIMENT_SPECS = ["heavy_resnet50"]
@@ -29,10 +29,10 @@ LIGHT_EXPERIMENT_SPECS = ["light_cnn"]
 
 
 
-from pathlib import Path
+# from pathlib import Path
 
-REPO_ROOT = Path.cwd().parents[0]
-OUTPUTS_DIR = REPO_ROOT / "outputs"
+# REPO_ROOT = Path.cwd().parents[1]
+# OUTPUTS_DIR = REPO_ROOT / "outputs"
 # TRACE_OUTPUT_FILE = REPO_ROOT / "outputs" / 
 # OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 # print(OUTPUTS_DIR)
@@ -65,6 +65,8 @@ def run_experiment(
     num_tasks: int = 10,
 ) -> Evaluator:
     set_seed(42)
+
+    OUTPUTS_DIR_RUN.mkdir(parents=True, exist_ok=True)
 
     nodes = Node.discover_shared_gpu_workers(num_workers=k, gpu_id=0)
     print(f"Using {len(nodes)} shared-GPU workers: {nodes}")
@@ -121,7 +123,7 @@ def run_experiment(
     evaluator = Evaluator(taskset, profiler)
 
     tracer_naive = VizTracer(
-        output_file=f"{OUTPUTS_DIR}/result_naive_{heavy_light_ratio}_list_scheduling.html"
+        output_file=f"{OUTPUTS_DIR_RUN}/result_naive_{heavy_light_ratio}_list_scheduling.html"
     )
     tracer_naive.start()
     evaluator.run_naive_execution()
@@ -129,7 +131,7 @@ def run_experiment(
     tracer_naive.save()
 
     tracer_parallel = VizTracer(
-        output_file=f"{OUTPUTS_DIR}/result_parallel_{heavy_light_ratio}_list_scheduling.html"
+        output_file=f"{OUTPUTS_DIR_RUN}/result_parallel_{heavy_light_ratio}_list_scheduling.html"
     )
     tracer_parallel.start()
     evaluator.run_parallel_execution()
@@ -139,6 +141,14 @@ def run_experiment(
     evaluator.compare_outputs()
     evaluator.analyze_speedup_throughput()
 
+    # del evaluator
+    # gc.collect()
+
+    # if torch.cuda.is_available():
+    #     torch.cuda.synchronize()
+    #     torch.cuda.empty_cache()
+    #     torch.cuda.reset_peak_memory_stats()
+    
     for node in nodes:
         node.stop()
 

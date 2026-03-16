@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import argparse
-
+import gc
+import torch
 from pydart.experiment import run_experiment, run_multiple_experiments
 
 
@@ -31,11 +32,19 @@ def cmd_run(args: argparse.Namespace) -> None:
         f"(workers={args.workers}, ratio={ratio}, tasks={args.tasks})."
     )
 
-    run_experiment(
+    eval = run_experiment(
         k=args.workers,
         heavy_light_ratio=ratio,
         num_tasks=args.tasks,
     )
+
+    del eval
+
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats()
 
 
 def cmd_sweep(args: argparse.Namespace) -> None:
