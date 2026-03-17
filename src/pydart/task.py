@@ -433,7 +433,7 @@ class Evaluator:
 
     def run_baseline_execution(self, mode: str = "sequential"):
         if mode == "sequential":
-            return self.run_baseline_execution(mode="sequential")
+            return self.run_naive_execution()
         if mode == "async":
             return self.run_async_naive_execution()
         raise ValueError(f"Unknown baseline mode: {mode}")
