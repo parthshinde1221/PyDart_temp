@@ -170,6 +170,9 @@ def main() -> None:
         task.populate_profile_records()
 
     taskset = Taskset(tasks, nodes)
+    for task in taskset.tasks:
+        task.print_stage_allocations()
+    
     evaluator = Evaluator(taskset, profiler)
 
     naive_trace = CUSTOM_OUTPUTS_DIR / "custom_mix_naive_trace.html"
