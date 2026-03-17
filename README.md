@@ -149,15 +149,28 @@ In this mode:
    Follow the official instructions for your platform:
    https://pytorch.org/get-started/locally/
 
-4. **Install PyDart**
+4. **Upgrade/Install packaging tools(Important)**
    ```bash
-   pip install .
+   python -m pip install --upgrade pip setuptools wheel
    ```
 
-5. **Verify the installation**
+5. **Install PyDart**
+
+   Recommended:
+   ```bash
+   python -m pip install -e .
+   ```
+
+   If needed, you can also try:
+   ```bash
+   python -m pip install --no-build-isolation -e .
+   ```
+
+6. **Verify the installation**
    ```bash
    pydart --help
    ```
+
 
 ## CLI
 
