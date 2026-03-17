@@ -11,7 +11,7 @@ PyDart currently supports:
 - Built-in model-registry-based experiments
 - Manual Python workflows for custom models and custom task construction
 - Baseline execution through `run_baseline_execution(mode=...)`
-- Scheduled parallel execution through the PyDart task execution pipeline
+- PyDart’s inference engine for partitioned and scheduled parallel execution, along with comparison against baseline execution
 
 You can use the CLI for simple built-in experiments, while more flexible or advanced workflows are better handled through Python scripts or notebooks.
 
@@ -29,6 +29,8 @@ With it, you can study things like:
 - **Scheduling behavior:** how PyDart can split and schedule tasks using custom metrics
 
 At the moment, custom metrics are not directly exposed through the minimal CLI workflow. To explore or extend that part of the framework, refer to `metrics.py`.
+
+> In the current demos, notebooks, and custom examples, PyDart uses a default cost metric based on a custom Arithmetic Intensity metric.
 
 See [Installation](#installation) to set up the environment, or jump to [CLI](#cli) and [Python for Custom Workflows](#python-for-custom-workflows) to start running experiments.
 
