@@ -180,6 +180,7 @@ PyDart provides a minimal CLI for built-in experiments.
 
 The CLI is intentionally small and only exposes the simplest built-in execution paths using the default model registry.
 
+
 ### Commands
 
 1. **Show CLI help**
@@ -191,11 +192,12 @@ The CLI is intentionally small and only exposes the simplest built-in execution 
    ```bash
    pydart run --workers 2 --ratio 1:1 --tasks 10 --baseline-mode sequential
    ```
-
 3. **Run multiple built-in experiments**
    ```bash
    pydart sweep --workers 2 --tasks 10 --baseline-mode sequential
    ```
+
+> The number of workers can be greater than 2. In practice, a useful range to explore is up to cpu_core_count - 1, while cpu_core_count // 2 is often a good starting point on systems with a larger number of CPU cores. The best value depends on workload characteristics and system-level contention.
 
 ### Ratio
 
