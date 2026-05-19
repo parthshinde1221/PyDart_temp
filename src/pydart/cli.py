@@ -6,6 +6,7 @@ import gc
 import torch
 
 from pydart.experiment import run_experiment, run_multiple_experiments
+from pydart.utils import set_seed
 
 
 def parse_ratio(text: str) -> tuple[int, int]:
@@ -148,4 +149,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    set_seed(42)
     main()
