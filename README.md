@@ -2,7 +2,7 @@
 
 PyDart is a lightweight experimental framework for studying and optimizing multi-model inference execution across shared compute resources. It is designed to make it easy to compare simple baseline execution against PyDart’s pipeline-parallel partitioning and scheduling approach towards excuetion, while keeping the workflow easy to follow.
 
-> **Note:** This repository is currently intended as a demo / experimental research framework.
+> **Note:** This repository is currently intended as a experimental research framework.
 
 ## Current Scope
 
@@ -26,7 +26,7 @@ With it, you can study things like:
 - **Task mix:** how different mixes of inference tasks behave when run together
 - **Batch size:** how the number of tasks in a batch affects performance
 - **Baseline comparison:** how concurrent execution compares with a simple baseline
-- **Scheduling behavior:** how PyDart can split and schedule tasks using custom metrics
+- **Partitioning & Scheduling behavior:** how PyDart can split and schedule tasks using custom metrics
 
 At the moment, custom metrics are not directly exposed through the minimal CLI workflow. To explore or extend that part of the framework, refer to `metrics.py`.
 
@@ -106,9 +106,10 @@ In this mode:
 
 ## System Diagram
 
-![PyDart System Diagram](System_Diagram.png)
+![PyDart System Diagram - Updated](Final_System_Design.png)
 
-> **Note:** The current diagram is older and will be updated.
+![PyDart System Diagram - Old](System_Diagram.png)
+
 
 ## Installation
 
@@ -205,8 +206,9 @@ The CLI is intentionally small and only exposes the simplest built-in execution 
 
 Examples:
 - `1:1` = equal heavy and light tasks
-- `2:1` = more heavy tasks
 - `1:2` = more light tasks
+- `2:1` = more heavy tasks
+- `9:1` = most heavy tasks
 
 This is useful for exploring how workload composition affects execution and scheduling.
 
@@ -227,11 +229,11 @@ Expected baseline modes include:
 Examples:
 
 ```bash
-pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode sequential
+pydart run --workers 2 --ratio 1:1 --tasks 10 --baseline-mode sequential
 ```
 
 ```bash
-pydart run --workers 2 --ratio 1:1 --tasks 8 --baseline-mode async
+pydart run --workers 2 --ratio 1:1 --tasks 10 --baseline-mode async
 ```
 
 ## Python for Custom Workflows
@@ -286,7 +288,7 @@ This structure helps separate built-in, custom, and multi-experiment outputs mor
 
 ## Notes
 
-- The repository is currently demo-oriented and experimental.
+- The repository is currently experimental.
 - The CLI is intentionally minimal.
 - `sequential` is the recommended baseline mode for most users and for routine testing.
 - `async` is also supported and can provide a stronger comparison point, but it may stress the system more at higher workloads.
