@@ -107,8 +107,10 @@ In this mode:
 ## System Diagram
 
 ![PyDart System Diagram - Updated](Final_System_Design.png)
+**Figure: PyDart System Design Updated — Offline Task Partitioning and Runtime Scheduling**
 
 ![PyDart System Diagram - Old](System_Diagram.png)
+**Figure: PyDart System Design Old**
 
 
 ## Installation
